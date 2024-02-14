@@ -4,7 +4,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from string import ascii_uppercase
 
 from App.models import User, SuperSU, Chat
-from App import db, login_manager, fernet
+from App import db, login_manager
 
 import random
 

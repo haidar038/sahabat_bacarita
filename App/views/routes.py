@@ -6,7 +6,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import datetime
 
 from App.models import User, Cerita, Chat, SuperSU
-from App import db, admin, login_manager, socketio, fernet
+from App import db, admin, login_manager, socketio
 
 views = Blueprint('views', __name__)
 
