@@ -1,0 +1,89 @@
+{% extends 'base.html' %} {% block title %} Sahabat Bacarita {% endblock %} {% block body %}
+<body>
+    <img src="{{ url_for('static', filename='src/img/SR element.png' ) }}" class="position-absolute bottom-0 end-0 d-none d-lg-block" alt="" />
+    <img src="{{ url_for('static', filename='src/img/SR element 2.png' ) }}" class="position-absolute bottom-0 start-0 d-none d-lg-block" alt="" />
+    <header>
+        <nav class="navbar navbar-expand-lg bg-white">
+            <div class="container">
+                <a class="navbar-brand" href="/"><img src="{{ url_for('static', filename='src/img/SARITA LOGO 2.png' ) }}" alt="SARITA LOGO" /></a>
+                <button
+                    class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                >
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-lg-auto mb-2 mb-lg-0 gap-lg-3">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Tentang</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Kontak</a>
+                        </li>
+                        <!-- <li class="nav-item ms-lg-3 mt-3 mt-lg-0">
+                            <a class="btn btn-yellow fw-bold rounded-3" role="button" href="#loginModal" data-bs-toggle="modal" data-bs-target="#loginModal">Masuk</a>
+                        </li> -->
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="container">
+            <div class="row mb-lg-0 mb-4 d-lg-flex justify-content-center">
+                <div class="col-12 col-lg-7 mt-3">
+                    <div class="card card-body rounded-4 shadow py-5">
+                        <form action="" method="post" class="mb-4">
+                            <div class="mb-4 text-center">
+                                <h4 class="fw-bold">Masuk</h4>
+                            </div>
+                            {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} {% for category, message in messages %}
+                            <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+                                <span>{{message}}</span>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="closeBtn"></button>
+                            </div>
+                            {% endfor %} {% endif %} {% endwith %}
+                            <div class="form-floating mb-3">
+                                <input type="email" class="form-control" id="emailAddress" name="emailAddress" placeholder="Alamat Email" required />
+                                <label for="emailAddress">Alamat Email</label>
+                            </div>
+                            <div class="input-group mb-4">
+                                <div class="form-floating">
+                                    <input type="password" class="form-control" id="userPassword" name="userPassword" placeholder="********" required />
+                                    <label for="userPassword">Kata Sandi</label>
+                                </div>
+                                <button type="button" onclick="showPass()" id="showPassBtn" class="btn btn-outline-secondary p-3"><i id="passIcon" class="bi bi-eye-slash-fill"></i></button>
+                            </div>
+                            <button type="submit" class="btn btn-purple btn-lg w-100">Masuk</button>
+                        </form>
+                        <div class="text-center">Belum punya akun? <a href="{{ url_for('auth.register' ) }}" class="link-purple fw-bold text-decoration-none">Daftar disini</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer></footer>
+    <script>
+        function showPass() {
+            const showPassBtn = document.getElementById("showPassBtn");
+            const icon = document.getElementById("passIcon");
+            const userPass = document.getElementById("userPassword");
+
+            if (userPass.type === "password") {
+                userPass.type = "text";
+                icon.classList.remove("bi-eye-slash-fill");
+                icon.classList.add("bi-eye-fill");
+            } else {
+                userPass.type = "password";
+                icon.classList.remove("bi-eye-fill");
+                icon.classList.add("bi-eye-slash-fill");
+            }
+        }
+    </script>
+</body>
+{% endblock %}

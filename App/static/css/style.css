@@ -1,0 +1,186 @@
+:root {
+    --color-purple: #9747ff;
+    --color-purple-hover: #7d34dc;
+    --color-purple-light: #e6d3ff;
+    --color-yellow: #ffe500;
+    --color-yellow-hover: #fff06c;
+    --color-yellow-light: #fdf5bc;
+}
+
+* {
+    font-family: "Plus Jakarta Sans";
+}
+
+.navbar-brand img {
+    height: 40px;
+}
+
+.btn-yellow {
+    background-color: var(--color-yellow) !important;
+    outline: none !important;
+    border: 0 !important;
+    color: #333 !important;
+    transition: ease-in-out 0.3s;
+}
+
+.btn-yellow:hover {
+    background-color: var(--color-yellow-hover) !important;
+}
+
+.bg-yellow {
+    background-color: var(--color-yellow) !important;
+    color: #121212 !important;
+}
+
+.bg-purple {
+    background-color: var(--color-purple) !important;
+    color: #fff !important;
+}
+
+.btn-purple {
+    background-color: var(--color-purple) !important;
+    outline: none !important;
+    border: 0 !important;
+    color: #fff !important;
+    transition: ease-in-out 0.3s;
+}
+
+.btn-purple:hover {
+    background-color: var(--color-purple-hover) !important;
+}
+
+.btn-outline-purple {
+    background-color: white;
+    outline: 1.5px solid #9747ff !important;
+    border: 0 !important;
+    color: #9747ff !important;
+    transition: ease-in-out 0.3s;
+}
+
+.btn-outline-purple:hover {
+    background-color: var(--color-purple) !important;
+    color: white !important;
+}
+
+.link-yellow {
+    color: var(--color-yellow) !important;
+    text-decoration: underline !important;
+}
+
+.link-yellow:hover {
+    color: var(--color-yellow-hover) !important;
+}
+
+.link-purple {
+    color: var(--color-purple) !important;
+    text-decoration: underline !important;
+    transition: ease-in-out 0.3s;
+}
+
+.link-purple:hover {
+    color: var(--color-purple-hover) !important;
+}
+
+.form-control:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border-color: var(--color-yellow) !important;
+}
+
+.form-check-input:checked {
+    background-color: var(--color-purple) !important;
+    border-color: var(--color-purple) !important;
+}
+
+.form-check-input:focus {
+    box-shadow: none !important;
+    border-color: var(--color-purple) !important;
+}
+
+.chat-bubble-me {
+    background-color: var(--color-purple-light);
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+    max-width: 400px;
+}
+
+.chat-bubble-reply {
+    background-color: var(--color-yellow-light);
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+    max-width: 400px;
+}
+
+.pagination {
+    --bs-pagination-padding-x: 0.75rem;
+    --bs-pagination-padding-y: 0.375rem;
+    --bs-pagination-font-size: 1rem;
+    --bs-pagination-color: var(--color-purple) !important;
+    --bs-pagination-bg: var(--bs-body-bg);
+    --bs-pagination-border-width: var(--bs-border-width);
+    --bs-pagination-border-color: var(--bs-border-color);
+    --bs-pagination-border-radius: var(--bs-border-radius);
+    --bs-pagination-hover-color: var(--color-purple) !important;
+    --bs-pagination-hover-bg: var(--bs-tertiary-bg);
+    --bs-pagination-hover-border-color: var(--color-purple) !important;
+    --bs-pagination-focus-color: var(--color-purple) !important;
+    --bs-pagination-focus-bg: var(--bs-secondary-bg);
+    --bs-pagination-focus-box-shadow: none !important;
+    --bs-pagination-active-color: #fff;
+    --bs-pagination-active-bg: var(--color-purple) !important;
+    --bs-pagination-active-border-color: var(--color-purple) !important;
+    --bs-pagination-disabled-color: var(--bs-secondary-color);
+    --bs-pagination-disabled-bg: var(--bs-secondary-bg);
+    --bs-pagination-disabled-border-color: var(--bs-border-color);
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+}
+
+.chat-room {
+    /* height: 30rem; */
+    max-height: 30rem;
+    overflow-y: scroll;
+}
+
+.chat-card {
+    min-height: 35rem;
+}
+
+.hero-img {
+    height: 18rem;
+}
+
+/* .progress-bar {
+    width: 100%;
+    background-color: var(--color-purple);
+    border-radius: 5px;
+    margin-top: 10px;
+} */
+
+/* Style untuk penunjuk waktu */
+/* .progress {
+    width: 0%;
+    height: 10px;
+    background-color: var(--color-purple);
+    border-radius: 5px;
+    color: black;
+} */
+
+/** Mobile Screen  **/
+@media screen and (max-width: 767.9px) {
+    .hero-img {
+        height: 8rem;
+    }
+
+    .chat-room {
+        max-height: 28rem;
+        overflow-y: scroll;
+    }
+
+    .post-table {
+        table-layout: fixed;
+    }
+}

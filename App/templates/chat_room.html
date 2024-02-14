@@ -1,0 +1,236 @@
+{% extends 'base.html' %} {% block title %} Chat Room {% endblock %} {% block body %}
+
+<body>
+    <img src="{{ url_for('static', filename='src/img/SR element.png' ) }}"
+        class="position-absolute bottom-0 end-0 d-none d-lg-block" alt="" />
+    <img src="{{ url_for('static', filename='src/img/SR element 2.png' ) }}"
+        class="position-absolute bottom-0 start-0 d-none d-lg-block" alt="" />
+    <header>
+        <nav class="navbar navbar-expand-lg bg-white">
+            <div class="container">
+                <a class="navbar-brand" href="/"><img
+                        src="{{ url_for('static', filename='src/img/SARITA LOGO 2.png' ) }}" alt="SARITA LOGO" /></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-lg-auto mb-2 mb-lg-0 gap-lg-3">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Tentang</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Kontak</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false"> Profil </a>
+                            <ul class="dropdown-menu">
+                                {% if current_user.account_type == 'admin' %}
+                                <li><a class="dropdown-item"
+                                        href="{{ url_for('views.adminProfile', username=current_user.username) }}">Lihat
+                                        Profil</a>
+                                </li>
+                                {% else %}
+                                <li><a class="dropdown-item"
+                                        href="{{ url_for('views.profil', username=current_user.username ) }}">Lihat
+                                        Profil</a></li>
+                                {% endif %}
+                                <li><a class="dropdown-item" href="{{ url_for('auth.logout' ) }}">Keluar</a></li>
+                            </ul>
+                        </li>
+                        <!-- <li class="nav-item ms-lg-3 mt-3 mt-lg-0">
+                            <a class="btn btn-yellow fw-bold rounded-3" role="button" href="#friendList"
+                                data-bs-toggle="modal" data-bs-target="#friendList">Masuk</a>
+                        </li> -->
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="container">
+            <div class="row pt-lg-5 d-lg-flex justify-content-lg-center">
+                <div class="col-12 col-lg-8 mb-3 mb-lg-0">
+                    <div class="card mb-3">
+                        <div class="card-header fw-bold bg-purple d-flex align-items-center justify-content-between">
+                            <div>
+                                <p class="mb-0">Chat Room</p>
+                                <small class="fw-normal text-white-50 room-name"></small>
+                            </div>
+                            <!-- <input class="visually-hidden" type="text" name="user_ids" id="user_ids" value="Haidar"> -->
+                            <div class="dropdown">
+                                <button class="btn btn-purple" type="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    <i class="bi bi-three-dots-vertical"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li>
+                                        <a class="dropdown-item" href="#clearChat" data-bs-toggle="modal"
+                                            data-bs-target="#clearChat"><i class="bi bi-trash-fill me-2"></i> Bersihkan
+                                            Chat</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-body chat-room" id="chatRoom">
+                            <ul class="list-unstyled d-flex justify-content-end mb-0 flex-column h-100"
+                                id="chatContainer">
+                                {% if msgs.has_next %}
+                                <div class="d-flex flex-column align-items-center">
+                                    <a class="btn btn-secondary rounded-pill"
+                                        href="{{ url_for('views.chat', room=room, page_num=msgs.next_num) }}">Pesan
+                                        Sebelumnya</a>
+                                </div>
+                                {% endif %}
+
+                                {% for chats in msgs.items|reverse %}
+                                {% if chats.sender == current_user.username %}
+                                <div class="text-end small text-muted">{{chats.sender}}</div>
+                                <li class="chat-bubble-me rounded-start-5 rounded-bottom-5 p-3 mb-3 ms-auto">
+                                    {{chats.pesan }}</li>
+                                {% else %}
+                                <div class="small text-muted">{{chats.sender}}</div>
+                                <li class="chat-bubble-reply rounded-end-5 rounded-bottom-5 p-3 mb-3 me-auto">
+                                    {{chats.pesan }}</li>
+                                {% endif %}
+                                {% endfor %}
+
+                                {% if msgs.has_prev %}
+                                <div class="d-flex flex-column align-items-center">
+                                    <a class="btn btn-secondary rounded-pill"
+                                        href="{{ url_for('views.chat', room=room, page_num=msgs.prev_num) }}">Pesan
+                                        Selanjutnya</a>
+                                </div>
+                                {% endif %}
+                            </ul>
+                        </div>
+
+
+                        <div class="px-3">
+                            <form action="" method="post">
+                                <div class="input-group mb-3">
+                                    <textarea autofocus="true" id="message" name="message" type="text"
+                                        class="form-control" placeholder="Ketik apapun..." aria-label="Ketik apapun..."
+                                        aria-describedby="sendButton" rows="1" maxlength="100"
+                                        style="resize: none"></textarea>
+                                    <!-- <textarea name="" id="" cols="30" rows="10"></textarea> -->
+                                    <button class="btn btn-yellow" type="button" id="sendButton">Kirim <i
+                                            class="bi bi-send-fill"></i></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- CHAT CLEAR -->
+    <div class="modal fade" id="clearChat" tabindex="-1" aria-labelledby="clearChatLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <!-- <div class="modal-header">
+                    <p class="modal-title mb-0 fw-bold">Bersihkan Chat</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div> -->
+                <div class="modal-body">
+                    <p class="text-center mb-0">Apakah anda yakin akan <span class="fw-bold text-danger">membersihkan
+                            semua pesan</span>?</p>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                    <a role="button" href="{{ url_for('views.delete_chat', room=room ) }}"
+                        class="btn btn-danger">Hapus!</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const socket = io({ autoConnect: false });
+
+        window.addEventListener("load", function () {
+            let username = `{{ current_user.username }}`;
+            var chatRoom = document.querySelector("#chatRoom");
+
+            socket.connect();
+
+            socket.on("connect", function () {
+                socket.emit("user_join", `{{room}}`);
+                chatRoom.scrollTop = chatRoom.scrollHeight;
+            });
+
+            socket.on("leave", function (room) {
+                console.log("User " + username + " has leave the room")
+                socket.emit("leave", `{{room}}`);
+            });
+
+            socket.on("chat", function (data) {
+                let chatContainer = document.getElementById("chatContainer");
+                let li = document.createElement("li");
+                let user_name = document.createElement("span")
+                let chatRoom = document.querySelector("#chatRoom");
+
+                // Memeriksa apakah pesan ditujukan untuk pengguna saat ini atau bukan
+                if (data["username"] != username) {
+                    // Menampilkan pesan hanya jika sesuai dengan ruangan yang benar
+                    li.appendChild(document.createTextNode(data["message"]));
+                    user_name.appendChild(document.createTextNode(data["username"]));
+                    li.classList.add("chat-bubble-reply", "rounded-end-pill", "rounded-bottom-pill", "p-3", "mb-3");
+                    user_name.classList.add("small", "text-muted");
+                    chatContainer.appendChild(user_name);
+                    chatContainer.appendChild(li);
+                } else {
+                    li.appendChild(document.createTextNode(data["message"]));
+                    user_name.appendChild(document.createTextNode(data["username"]));
+                    li.classList.add("chat-bubble-me", "rounded-start-pill", "rounded-bottom-pill", "p-3", "mb-3", "ms-auto");
+                    user_name.classList.add("text-end", "small", "text-muted");
+                    chatContainer.appendChild(user_name);
+                    chatContainer.appendChild(li);
+                }
+                chatRoom.scrollTop = chatRoom.scrollHeight;
+            });
+        });
+
+        document.getElementById("message").addEventListener("keyup", function (event) {
+            if (event.key == "Enter") {
+                let message = document.getElementById("message").value;
+                let room = `{{room}}`
+                //console.log(message + room)
+                socket.emit("new_message", message, room);
+                document.getElementById("message").value = "";
+            }
+        });
+
+        // Attach a click event listener to the button
+        document.getElementById("sendButton").addEventListener("click", function () {
+            let message = document.getElementById("message").value;
+            let room = `{{room}}`
+            console.log(message + room)
+            socket.emit("new_message", message, room);
+            document.getElementById("message").value = "";
+        });
+    </script>
+
+    <script>
+        function showPass() {
+            const showPassBtn = document.getElementById("showPassBtn");
+            const icon = document.getElementById("passIcon");
+            const userPass = document.getElementById("userPassword");
+
+            if (userPass.type === "password") {
+                userPass.type = "text";
+                icon.classList.remove("bi-eye-slash-fill");
+                icon.classList.add("bi-eye-fill");
+            } else {
+                userPass.type = "password";
+                icon.classList.remove("bi-eye-fill");
+                icon.classList.add("bi-eye-slash-fill");
+            }
+        }
+    </script>
+
+</body>
+{% endblock %}

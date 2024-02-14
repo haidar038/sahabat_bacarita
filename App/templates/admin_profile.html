@@ -1,0 +1,207 @@
+{% extends 'base.html' %} {% block title %} Profil {% endblock %} {% block body %}
+
+<body>
+    <img src="{{ url_for('static', filename='src/img/SR element.png') }}"
+        class="position-absolute bottom-0 end-0 d-none d-lg-block" alt="" />
+    <img src="{{ url_for('static', filename='src/img/SR element 2.png') }}"
+        class="position-absolute bottom-0 start-0 d-none d-lg-block" alt="" />
+    <header>
+        <nav class="navbar navbar-expand-lg bg-white">
+            <div class="container">
+                <a class="navbar-brand" href="/"><img
+                        src="{{ url_for('static', filename='src/img/SARITA LOGO 2.png') }}" alt="SARITA LOGO" /></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-lg-auto mb-2 mb-lg-0 gap-lg-3">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Tentang</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Kontak</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false"> Profil </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Lihat Profil</a></li>
+                                <li><a class="dropdown-item" href="#">Keluar</a></li>
+                            </ul>
+                        </li>
+                        <!-- <li class="nav-item ms-lg-3 mt-3 mt-lg-0">
+                            <a class="btn btn-yellow fw-bold rounded-3" role="button" href="#loginModal"
+                                data-bs-toggle="modal" data-bs-target="#loginModal">Masuk</a>
+                        </li> -->
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="container">
+            <div class="row pt-5 d-lg-flex justify-content-lg-center">
+                <div class="col-12 col-lg-6 mb-lg-0">
+                    <div class="card rounded-4 p-3">
+                        <div class="card-body">
+                            <form action="" method="post">
+                                <h5 class="fw-bold mb-4 text-center">Profil Anda</h5>
+                                <div class="mb-3 form-floating">
+                                    <input type="text" class="form-control" id="username" name="username"
+                                        placeholder="Username anda" value="{{ current_user.username }}" disabled />
+                                    <label for="username" class="form-label fw-bold">Username</label>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <div class="form-floating">
+                                        <input type="password" class="form-control" id="password" name="password"
+                                            value="" placeholder="********" disabled />
+                                        <label for="password">Kata Sandi</label>
+                                    </div>
+                                    <button type="button" onclick="showPass()" id="showPassBtn"
+                                        class="btn btn-outline-secondary p-3"><i id="passIcon"
+                                            class="bi bi-eye-slash-fill"></i></button>
+                                </div>
+                                <div class="d-flex flex-column gap-2">
+                                    <button type="button" onclick="editProfile()" class="btn btn-purple fw-bold"
+                                        id="editProfileBtn">Edit Profil</button>
+                                    <button type="submit" onclick="editProfile()" class="btn btn-purple fw-bold d-none"
+                                        id="submitBtn">Simpan Perubahan</button>
+                                    <button type="button" onclick="cancelEdit()"
+                                        class="btn btn-outline-secondary d-none" id="cancelBtn">Batalkan</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer></footer>
+
+    {% for user in user_data %}
+    <div class="modal fade" id="deleteUserModal{{ user.id }}" tabindex="-1"
+        aria-labelledby="deleteUserModalLabel{{ user.id }}" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 p-lg-3">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5 fw-bold" id="postsLabel{{ user.id }}">Hapus Akun</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <p>Apakah anda yakin akan menghapus akun dengan username <span class="text-danger fw-bold">{{
+                            user.username }}</span>?</p>
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <!-- <button type="button" class="btn btn-danger">Ya! Hapus Akun</button> -->
+                    <a class="btn btn-outline-danger" href="{{ url_for('views.delete_user', id=user.id ) }}"><i
+                            class="bi bi-trash-fill me-2"></i>Ya! Hapus Akun</a>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% for user in user_data %}
+    <div class="modal fade" id="postsModal{{ user.id }}" tabindex="-1" aria-labelledby="postsModalLabel{{ user.id }}"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content rounded-4 p-lg-3">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5 fw-bold" id="postsLabel{{ user.id }}">Cerita Sahabat</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table post-table">
+                            <thead>
+                                <tr>
+                                    <td scope="col" style="width: 10%">#</td>
+                                    <td scope="col" style="width: 40%">Cerita</td>
+                                    <td scope="col" style="width: 40%" class="text-center">Status</td>
+                                    <td scope="col" style="width: 10%" class="text-end">Action</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for posts in cerita %}{% if posts.user_id == user.id %}
+                                <tr class="align-middle">
+                                    <th scope="row">{{ loop.index }}</th>
+                                    <td class="align-middle text-truncate">{{posts.konten}}</td>
+                                    {% if posts.status == False %}
+                                    <td class="align-middle text-center"><span
+                                            class="badge text-bg-danger rounded-pill">Belum Disetujui</span></td>
+                                    {% else %}
+                                    <td class="align-middle text-center"><span
+                                            class="badge text-bg-success rounded-pill">Sudah Disetujui</span></td>
+                                    {% endif %}
+                                    <td class="align-middle text-end">
+                                        <button class="btn btn-light" type="button" data-bs-toggle="dropdown"
+                                            aria-expanded="false">
+                                            <i class="bi bi-three-dots-vertical"></i>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <a href="{{ url_for('views.approve_post', id=posts.id ) }}"
+                                                    class="dropdown-item"> <i class="bi bi-check-circle-fill me-2"></i>
+                                                    Setujui Postingan </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item"
+                                                    href="{{ url_for('views.delete_post', id=posts.id ) }}"><i
+                                                        class="bi bi-trash-fill me-2"></i> Hapus</a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                {% endif %}{% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    <script>
+        function showPass() {
+            const passwordField = document.getElementById("password");
+            const passIcon = document.getElementById("passIcon");
+
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                passIcon.classList.remove("bi-eye-slash-fill");
+                passIcon.classList.add("bi-eye-fill");
+            } else {
+                passwordField.type = "password";
+                passIcon.classList.remove("bi-eye-fill");
+                passIcon.classList.add("bi-eye-slash-fill");
+            }
+        }
+
+        function editProfile() {
+            const cancelBtn = document.getElementById("cancelBtn").classList.remove("d-none");
+            const submitBtn = document.getElementById("submitBtn").classList.remove("d-none");
+            const editBtn = document.getElementById("editProfileBtn");
+            const username = document.getElementById("username");
+            const password = document.getElementById("password");
+            editBtn.classList.add("d-none");
+            username.disabled = false;
+            password.disabled = false;
+        }
+
+        function cancelEdit() {
+            const cancelBtn = document.getElementById("cancelBtn").classList.add("d-none");
+            const submitBtn = document.getElementById("submitBtn").classList.add("d-none");
+            const editBtn = document.getElementById("editProfileBtn");
+            const username = document.getElementById("username");
+            const password = document.getElementById("password");
+            editBtn.classList.remove("d-none");
+            username.disabled = true;
+            password.disabled = true;
+            password.value = "";
+        }
+    </script>
+</body>
+{% endblock %}
