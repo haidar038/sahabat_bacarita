@@ -47,4 +47,4 @@ def create_app():
             db.session.add(supersu)
             db.session.commit()
 
-    # return app
+    return app
