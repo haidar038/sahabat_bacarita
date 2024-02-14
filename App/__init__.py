@@ -6,9 +6,6 @@ from flask_socketio import SocketIO
 from werkzeug.security import generate_password_hash
 # from flask_multipass import Multipass, IdentityProvider
 
-key = Fernet.generate_key()
-fernet = Fernet(key)
-
 socketio = SocketIO(cors_allowed_origins="*")
 db = SQLAlchemy()
 login_manager = LoginManager()
