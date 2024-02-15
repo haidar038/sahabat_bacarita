@@ -7,7 +7,6 @@ click==8.1.7
 colorama==0.4.6
 cryptography==42.0.2
 dnspython==2.5.0
-eventlet==0.34.3
 Flask==3.0.1
 Flask-Admin==1.6.1
 Flask-BabelEx==0.9.4
