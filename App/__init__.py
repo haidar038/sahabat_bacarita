@@ -4,6 +4,7 @@ from flask_login import LoginManager
 from flask_admin import Admin
 from flask_socketio import SocketIO
 from werkzeug.security import generate_password_hash
+import eventlet
 # from flask_multipass import Multipass, IdentityProvider
 
 socketio = SocketIO(cors_allowed_origins="*")
@@ -24,6 +25,7 @@ def create_app():
     db.init_app(app)
     admin.init_app(app)
     socketio.init_app(app)
+    eventlet.monkey_patch()
 
     # multipass.init_app(app)
     login_manager.init_app(app)
