@@ -4,6 +4,9 @@ from flask_login import LoginManager
 from flask_admin import Admin
 from flask_socketio import SocketIO
 from werkzeug.security import generate_password_hash
+
+import eventlet
+eventlet.monkey_patch()
 # from flask_multipass import Multipass, IdentityProvider
 
 socketio = SocketIO(cors_allowed_origins="*")
